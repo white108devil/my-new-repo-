@@ -1,0 +1,48 @@
+data:
+  raw_path: data/raw/Bank_Transaction_Fraud_Detection.csv
+  label_column: Is_Fraud
+  anomaly_label: 1
+  normal_label: 0
+  drop_columns:
+    - Customer_Name
+    - Customer_Email
+    - Transaction_Description
+  fillna_strategy: median
+
+nng_mix:
+  labeled_anomaly_fraction: 0.2
+  k_neighbors: 5
+  pseudo_per_anomaly: 5
+  mix_mu: 0.5
+  mix_sigma: 0.1
+  noise_std: 0.02
+  random_state: 42
+
+model:
+  n_estimators: 300
+  max_depth: 14
+  min_samples_leaf: 2
+  class_weight: balanced
+  random_state: 42
+
+threshold:
+  method: expected_rate
+  expected_anomaly_rate: 0.05
+
+visualization:
+  sample_size: 8000
+  random_state: 42
+  show_plots: true
+  output_path: outputs/plots/scatter_nng_mix.png
+  confusion_matrix_path: outputs/plots/confusion_matrices.png
+  roc_curve_path: outputs/plots/roc_curves.png
+  score_distribution_path: outputs/plots/score_distributions.png
+
+outputs:
+  predictions_csv: data/output/anomaly_predictions.csv
+  fraud_csv: data/output/fraud_transactions.csv
+  clean_csv: data/output/clean_transactions.csv
+  pseudo_csv: data/output/pseudo_anomalies.csv
+  model_path: models/nng_mix_model.joblib
+  summary_path: data/output/run_summary.json
+  processed_features_csv: data/processed/processed_features.csv
